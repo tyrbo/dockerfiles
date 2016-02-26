@@ -1,4 +1,4 @@
-FROM tyrbo/initial:0.0.1
+FROM tyrbo/initial:latest
 MAINTAINER Jonmichael Chambers <jon@tyrbo.net>
 
 USER root
@@ -32,8 +32,12 @@ RUN git clone git://github.com/ariya/phantomjs.git && \
   git submodule update
 
 RUN cd phantomjs && python build.py
+RUN cp /root/phantomjs/bin/phantomjs /usr/local/bin && \
+  rm -rf /root/phantomjs
 
 USER app
 WORKDIR /home/app
 
-CMD ["/bin/bash"]
+EXPOSE 8910
+
+CMD ["/usr/local/bin/phantomjs", "--wd"]
